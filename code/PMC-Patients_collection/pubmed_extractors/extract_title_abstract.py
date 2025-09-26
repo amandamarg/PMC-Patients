@@ -44,15 +44,15 @@ if __name__ == "__main__":
         https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/ and
         https://ftp.ncbi.nlm.nih.gov/pubmed/updatefiles/
     '''
-    data_dir = "../../../../pubmed/pubmed_abstract_xml"
-    result_dir = "../../../../pubmed/pubmed_title_abstract"
+    data_dir = "./datasets/pubmed"
+    result_dir = "./datasets/pubmed/pubmed_title_abstract"
     if not os.path.exists(result_dir):
-        os.mkdir(result_dir)
-    file_list = os.listdir(data_dir)    
+        os.makedirs(result_dir, exist_ok=True)
+    file_list = [f for f in os.listdir(data_dir) if f.endswith('.xml') or f.endswith('.xml.gz')]
     
     # TODO: Multi-thread might be better.
-    pool = Pool(processes = 30)
-    results = pool.map(extract_title_abstract, file_list)
+    with Pool(processes=30) as pool:
+        results = pool.map(extract_title_abstract, file_list)
 
     abstract_count = 0
     for result in results:

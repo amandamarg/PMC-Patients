@@ -203,7 +203,7 @@ if __name__ == "__main__":
     # Convert several white space character into " "
     space = r"[\u3000\u2009\u2002\u2003\u00a0\u200a\xa0]"
 
-    data_dir = "../../../../PMC_OA/"
+    data_dir = "./datasets/pmc_oa"
     file_list = pd.read_csv(os.path.join(data_dir, "PMC_OA_meta.csv"))
 
     article_count = 0
@@ -214,8 +214,8 @@ if __name__ == "__main__":
     patients = []
 
     msgs = [(file_list['file_path'].iloc[i], str(file_list['PMID'].iloc[i]), file_list['License'].iloc[i]) for i in range(len(file_list))]
-    pool = Pool(processes = 20)
-    results = pool.map(extract, msgs)
+    with Pool(processes=20) as pool:
+        results = pool.map(extract, msgs)
 
     patient_id = 0
     for result in results:
@@ -226,7 +226,7 @@ if __name__ == "__main__":
         error_count += result[3]
         patients += result[4]
         
-    json.dump(patients, open("../../../meta_data/patient_note_candidates.json", "w"), indent = 4)
+    json.dump(patients, open("./meta_data/patient_note_candidates.json", "w"), indent = 4)
 
     stat()
     import ipdb; ipdb.set_trace()
