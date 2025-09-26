@@ -25,20 +25,18 @@ def extract_keywords(msg):
         keywords.append(getText(kwd))
     return PMID, keywords
         
-# PMC OA directory (use repo datasets path)
-data_dir = "./datasets/pmc_oa"
+# PMC OA directory
+data_dir = "../../../../PMC_OA/"
+# Results from PMC_OA_meta.py
+patients = json.load(open("../../../meta_data/PMC-Patients.json", "r"))
 
-if __name__ == '__main__':
-    # Results from PMC_OA_meta.py
-    patients = json.load(open("./meta_data/PMC-Patients.json", "r"))
+msgs = [(patient['file_path'], patient['PMID']) for patient in patients]
+pool = Pool(processes = 15)
+results = pool.map(extract_keywords, msgs)
 
-    msgs = [(patient['file_path'], patient['PMID']) for patient in patients]
-    with Pool(processes=15) as pool:
-        results = pool.map(extract_keywords, msgs)
+PMID2keywords = {}
+for result in results:
+    if len(result[1]) > 0:
+        PMID2keywords[result[0]] = result[1]
 
-    PMID2keywords = {}
-    for result in results:
-        if len(result[1]) > 0:
-            PMID2keywords[result[0]] = result[1]
-
-    json.dump(PMID2keywords, open("./meta_data/PMID2keywords.json", "w"), indent = 4)
+json.dump(PMID2keywords, open("../../../meta_data/PMID2keywords.json", "w"), indent = 4)

@@ -6,9 +6,7 @@ from tqdm import trange, tqdm
 
 
 # PMC_OA dataset downloaded from https://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/
-# data_dir = "../../../../PMC_OA"
-data_dir = "../../datasets/pmc_oa"
-print(os.listdir(data_dir))
+data_dir = "../../../../PMC_OA"
 # PMID/PMCID converter downloaded from https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/
 ID_converter = pd.read_csv(os.path.join(data_dir, "PMC-ids.csv"))
 ID_dict = {}

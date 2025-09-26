@@ -28,21 +28,18 @@ def extract_cites(msg):
                 cites.append(id_node.text)
     return PMID, cites
         
-# PMC OA directory (use the datasets folder in repo root)
-data_dir = "./datasets/pmc_oa"
+# PMC OA directory
+data_dir = "../../../../PMC_OA/"
+# Results from PMC_OA_meta.py
+file_list = pd.read_csv(os.path.join(data_dir, "PMC_OA_meta.csv"))
 
+msgs = [(file_list['file_path'].iloc[i], str(file_list['PMID'].iloc[i])) for i in range(len(file_list))]
+pool = Pool(processes = 15)
+results = pool.map(extract_cites, msgs)
 
-if __name__ == '__main__':
-    # Results from PMC_OA_meta.py
-    file_list = pd.read_csv(os.path.join(data_dir, "PMC_OA_meta.csv"))
+PMC_cites = {}
+for result in results:
+    if len(result[1]) > 0:
+        PMC_cites[result[0]] = result[1]
 
-    msgs = [(file_list['file_path'].iloc[i], str(file_list['PMID'].iloc[i])) for i in range(len(file_list))]
-    with Pool(processes=15) as pool:
-        results = pool.map(extract_cites, msgs)
-
-    PMC_cites = {}
-    for result in results:
-        if len(result[1]) > 0:
-            PMC_cites[result[0]] = result[1]
-
-    json.dump(PMC_cites, open(os.path.join(data_dir, "PMC_cites.json"), "w"), indent = 4)
+json.dump(PMC_cites, open(os.path.join(data_dir, "PMC_cites.json"), "w"), indent = 4)
