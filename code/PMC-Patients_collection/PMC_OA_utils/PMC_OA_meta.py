@@ -6,7 +6,8 @@ from tqdm import trange, tqdm
 
 
 # PMC_OA dataset downloaded from https://ftp.ncbi.nlm.nih.gov/pub/pmc/oa_bulk/
-data_dir = "../../../../PMC_OA"
+data_dir = "../../PMC_OA"
+
 # PMID/PMCID converter downloaded from https://www.ncbi.nlm.nih.gov/pmc/pmctopmid/
 ID_converter = pd.read_csv(os.path.join(data_dir, "PMC-ids.csv"))
 ID_dict = {}
@@ -24,7 +25,7 @@ PMIDs = []
 PMID_set = set()
 Licenses = []
 for subset in subsets:
-    directory = os.path.join(data_dir, subset)
+    directory = os.path.join(data_dir, subset, 'xml')
     csvs = filter(lambda x: x.endswith(".csv"), os.listdir(directory))
     
     for csv in tqdm(list(csvs)):

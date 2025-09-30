@@ -29,7 +29,8 @@ def extract_cites(msg):
     return PMID, cites
         
 # PMC OA directory
-data_dir = "../../../../PMC_OA/"
+data_dir = "../../PMC_OA"
+
 # Results from PMC_OA_meta.py
 file_list = pd.read_csv(os.path.join(data_dir, "PMC_OA_meta.csv"))
 

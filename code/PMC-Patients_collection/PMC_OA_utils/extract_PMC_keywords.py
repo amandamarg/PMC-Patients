@@ -26,7 +26,7 @@ def extract_keywords(msg):
     return PMID, keywords
         
 # PMC OA directory
-data_dir = "../../../../PMC_OA/"
+data_dir = "../../PMC_OA"
 # Results from PMC_OA_meta.py
 patients = json.load(open("../../../meta_data/PMC-Patients.json", "r"))
 
