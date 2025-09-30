@@ -25,7 +25,7 @@ PMIDs = []
 PMID_set = set()
 Licenses = []
 for subset in subsets:
-    directory = os.path.join(data_dir, subset, 'xml')
+    directory = os.path.join(data_dir, subset, 'txt')
     csvs = filter(lambda x: x.endswith(".csv"), os.listdir(directory))
     
     for csv in tqdm(list(csvs)):
